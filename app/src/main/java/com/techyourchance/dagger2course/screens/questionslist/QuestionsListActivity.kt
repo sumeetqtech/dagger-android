@@ -7,6 +7,7 @@ import com.techyourchance.dagger2course.Constants
 import com.techyourchance.dagger2course.networking.StackoverflowApi
 import com.techyourchance.dagger2course.questions.Question
 import com.techyourchance.dagger2course.screens.common.dialogs.ServerErrorDialogFragment
+import com.techyourchance.dagger2course.screens.questiondetails.QuestionDetailsActivity
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,9 +34,9 @@ class QuestionsListActivity : AppCompatActivity(), QuestionsListViewMvc.Listener
 
         // init retrofit
         val retrofit = Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
+            .baseUrl(Constants.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
         stackoverflowApi = retrofit.create(StackoverflowApi::class.java)
     }
 
@@ -76,8 +77,8 @@ class QuestionsListActivity : AppCompatActivity(), QuestionsListViewMvc.Listener
 
     private fun onFetchFailed() {
         supportFragmentManager.beginTransaction()
-                .add(ServerErrorDialogFragment.newInstance(), null)
-                .commitAllowingStateLoss()
+            .add(ServerErrorDialogFragment.newInstance(), null)
+            .commitAllowingStateLoss()
     }
 
     override fun onRefreshClicked() {
@@ -85,6 +86,6 @@ class QuestionsListActivity : AppCompatActivity(), QuestionsListViewMvc.Listener
     }
 
     override fun onQuestionClicked(question: Question) {
-
+        QuestionDetailsActivity.start(this, question.id)
     }
 }
