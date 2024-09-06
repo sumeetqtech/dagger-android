@@ -6,24 +6,23 @@ import android.os.Bundle
 import android.text.Html
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
-import com.techyourchance.dagger2course.Constants
-import com.techyourchance.dagger2course.networking.StackoverflowApi
-import com.techyourchance.dagger2course.screens.common.dialogs.ServerErrorDialogFragment
-import kotlinx.coroutines.CancellationException
+import com.techyourchance.dagger2course.questions.FetchQuestionDetailsUseCase
+import com.techyourchance.dagger2course.screens.common.ScreenNavigator
+import com.techyourchance.dagger2course.screens.common.dialogs.DialogsNavigator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class QuestionDetailsActivity : AppCompatActivity(), QuestionDetailsViewMvc.Listener {
 
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
-    private lateinit var stackoverflowApi: StackoverflowApi
+    private lateinit var fetchQuestionDetailsUseCase: FetchQuestionDetailsUseCase
     private lateinit var viewMvc: QuestionDetailsViewMvc
+    private lateinit var dialogsNavigator: DialogsNavigator
+    private lateinit var screenNavigator: ScreenNavigator
 
     private lateinit var questionId: String
 
@@ -33,15 +32,10 @@ class QuestionDetailsActivity : AppCompatActivity(), QuestionDetailsViewMvc.List
         viewMvc = QuestionDetailsViewMvc(LayoutInflater.from(this), null)
         setContentView(viewMvc.rootView)
 
-        // init retrofit
-        val retrofit = Retrofit.Builder()
-            .baseUrl(Constants.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        stackoverflowApi = retrofit.create(StackoverflowApi::class.java)
-
-        // retrieve question ID passed from outside
         questionId = intent.extras!!.getString(EXTRA_QUESTION_ID)!!
+        dialogsNavigator = DialogsNavigator(supportFragmentManager)
+        fetchQuestionDetailsUseCase = FetchQuestionDetailsUseCase()
+        screenNavigator = ScreenNavigator(this)
     }
 
     override fun onStart() {
@@ -60,18 +54,19 @@ class QuestionDetailsActivity : AppCompatActivity(), QuestionDetailsViewMvc.List
         coroutineScope.launch {
             viewMvc.showProgressIndication()
             try {
-                val response = stackoverflowApi.questionDetails(questionId)
-                if (response.isSuccessful && response.body() != null) {
-                    val questionBody = response.body()!!.question.body
-                    viewMvc.setQuestionText(
-                        Html.fromHtml(questionBody, Html.FROM_HTML_MODE_LEGACY).toString()
-                    )
-                } else {
-                    onFetchFailed()
-                }
-            } catch (t: Throwable) {
-                if (t !is CancellationException) {
-                    onFetchFailed()
+                when (val result = fetchQuestionDetailsUseCase.fetchQuestionDetails(questionId)) {
+                    is FetchQuestionDetailsUseCase.Result.Success -> {
+                        viewMvc.setQuestionText(
+                            Html.fromHtml(
+                                result.questionBody,
+                                Html.FROM_HTML_MODE_LEGACY
+                            ).toString()
+                        )
+                    }
+
+                    is FetchQuestionDetailsUseCase.Result.Failure -> {
+                        onFetchFailed()
+                    }
                 }
             } finally {
                 viewMvc.hideProgressIndication()
@@ -81,9 +76,7 @@ class QuestionDetailsActivity : AppCompatActivity(), QuestionDetailsViewMvc.List
     }
 
     private fun onFetchFailed() {
-        supportFragmentManager.beginTransaction()
-            .add(ServerErrorDialogFragment.newInstance(), null)
-            .commitAllowingStateLoss()
+        dialogsNavigator.showServerErrorDialog()
     }
 
     companion object {
@@ -96,6 +89,6 @@ class QuestionDetailsActivity : AppCompatActivity(), QuestionDetailsViewMvc.List
     }
 
     override fun onBackClicked() {
-        onBackPressed()
+        screenNavigator.navigateBack()
     }
 }
