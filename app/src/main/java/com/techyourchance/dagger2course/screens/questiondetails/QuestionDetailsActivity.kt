@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Html
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
+import com.techyourchance.dagger2course.MyApplication
 import com.techyourchance.dagger2course.questions.FetchQuestionDetailsUseCase
 import com.techyourchance.dagger2course.screens.common.ScreenNavigator
 import com.techyourchance.dagger2course.screens.common.dialogs.DialogsNavigator
@@ -34,7 +35,8 @@ class QuestionDetailsActivity : AppCompatActivity(), QuestionDetailsViewMvc.List
 
         questionId = intent.extras!!.getString(EXTRA_QUESTION_ID)!!
         dialogsNavigator = DialogsNavigator(supportFragmentManager)
-        fetchQuestionDetailsUseCase = FetchQuestionDetailsUseCase()
+        fetchQuestionDetailsUseCase = (application as MyApplication).fetchQuestionDetailsUseCase
+
         screenNavigator = ScreenNavigator(this)
     }
 
