@@ -1,4 +1,4 @@
-package com.techyourchance.dagger2course.common.composition
+package com.techyourchance.dagger2course.common.dependnecyinjection
 
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +15,7 @@ class ActivityCompositionRoot(
         ScreenNavigator(activity);
     }
 
+    val application get() = appCompositionRoot.application
     val stackoverflowApi: StackoverflowApi get() = appCompositionRoot.stackoverflowApi
     val fragmentManager: FragmentManager get() = activity.supportFragmentManager
     val layoutInflater: LayoutInflater get() = LayoutInflater.from(activity)

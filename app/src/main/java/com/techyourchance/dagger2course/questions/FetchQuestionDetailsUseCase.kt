@@ -8,7 +8,7 @@ import kotlin.coroutines.cancellation.CancellationException
 class FetchQuestionDetailsUseCase(private val stackoverflowApi: StackoverflowApi) {
 
     sealed class Result {
-        class Success(val questionBody: String) : Result()
+        data class Success(val questionBody: String) : Result()
         data object Failure : Result()
     }
 
