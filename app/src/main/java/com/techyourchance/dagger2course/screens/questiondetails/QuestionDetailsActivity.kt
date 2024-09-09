@@ -5,8 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Html
 import android.view.LayoutInflater
-import androidx.appcompat.app.AppCompatActivity
-import com.techyourchance.dagger2course.MyApplication
 import com.techyourchance.dagger2course.questions.FetchQuestionDetailsUseCase
 import com.techyourchance.dagger2course.screens.common.ScreenNavigator
 import com.techyourchance.dagger2course.screens.common.activities.BaseActivity
@@ -22,23 +20,24 @@ class QuestionDetailsActivity : BaseActivity(), QuestionDetailsViewMvc.Listener 
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
     private lateinit var fetchQuestionDetailsUseCase: FetchQuestionDetailsUseCase
-    private lateinit var viewMvc: QuestionDetailsViewMvc
     private lateinit var dialogsNavigator: DialogsNavigator
     private lateinit var screenNavigator: ScreenNavigator
+
+    private lateinit var viewMvc: QuestionDetailsViewMvc
 
     private lateinit var questionId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewMvc = QuestionDetailsViewMvc(LayoutInflater.from(this), null)
+        viewMvc = compositionRoot.viewMvcFactory.newQuestionDetailsViewMvc(null)
         setContentView(viewMvc.rootView)
 
-        questionId = intent.extras!!.getString(EXTRA_QUESTION_ID)!!
-        dialogsNavigator = DialogsNavigator(supportFragmentManager)
+        dialogsNavigator = compositionRoot.dialogsNavigator
         fetchQuestionDetailsUseCase = compositionRoot.fetchQuestionDetailsUseCase
+        screenNavigator = compositionRoot.screenNavigator
 
-        screenNavigator = ScreenNavigator(this)
+        questionId = intent.extras!!.getString(EXTRA_QUESTION_ID)!!
     }
 
     override fun onStart() {
