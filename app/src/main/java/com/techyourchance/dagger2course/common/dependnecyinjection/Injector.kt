@@ -10,7 +10,7 @@ import java.lang.reflect.Field
 class UnsupportedServiceException(serviceType: Class<*>?) :
     RuntimeException("Unsupported service type: ${serviceType?.name}")
 
-class Injector(private val compositionRoot: PresentationCompositionRoot) {
+class Injector(private val compositionRoot: PresentationModule) {
 
     fun inject(client: Any) {
         for (field in getAllFields(client)) {

@@ -6,8 +6,10 @@ import com.techyourchance.dagger2course.questions.FetchQuestionDetailsUseCase
 import com.techyourchance.dagger2course.questions.FetchQuestionsUseCase
 import com.techyourchance.dagger2course.screens.common.dialogs.DialogsNavigator
 import com.techyourchance.dagger2course.screens.common.viewsmvc.ViewMvcFactory
+import dagger.Module
 
-class PresentationCompositionRoot(private val activityCompositionRoot: ActivityCompositionRoot) {
+@Module
+class PresentationModule(private val activityCompositionRoot: ActivityCompositionRoot) {
 
     private val stackoverflowApi: StackoverflowApi get() = activityCompositionRoot.stackoverflowApi
     private val fragmentManager: FragmentManager get() = activityCompositionRoot.fragmentManager
