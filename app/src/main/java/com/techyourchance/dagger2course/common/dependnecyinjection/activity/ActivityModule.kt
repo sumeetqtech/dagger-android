@@ -14,11 +14,7 @@ class ActivityModule(
     private val activity: AppCompatActivity,
     private val component: AppComponent
 ) {
-
-    val screenNavigator by lazy {
-        ScreenNavigator(activity);
-    }
-
+    
     @Provides
     fun application() = component.application()
 
@@ -32,6 +28,7 @@ class ActivityModule(
     fun layoutInflater(): LayoutInflater = LayoutInflater.from(activity)
 
     @Provides
-    fun screenNavigator(): ScreenNavigator = screenNavigator
+    @ActivityScope
+    fun screenNavigator(): ScreenNavigator = ScreenNavigator(activity)
 
 }

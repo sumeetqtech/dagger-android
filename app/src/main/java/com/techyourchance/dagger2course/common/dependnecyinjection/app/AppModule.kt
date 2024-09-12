@@ -11,20 +11,22 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 @UiThread
 @Module
-class AppModule(val application: Application) {
+class AppModule(private val application: Application) {
 
-    private val retrofit: Retrofit by lazy {
-        Retrofit.Builder()
+    @Provides
+    @AppScope
+    fun retrofit(): Retrofit {
+        return Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
-    val stackoverflowApi: StackoverflowApi by lazy { retrofit.create(StackoverflowApi::class.java) }
+    @Provides
+    @AppScope
+    fun stackoverflowApi(): StackoverflowApi = retrofit().create(StackoverflowApi::class.java)
 
     @Provides
-    fun stackoverflowApi(): StackoverflowApi = stackoverflowApi
-
-    @Provides
+    @AppScope
     fun application(): Application = application
 }
