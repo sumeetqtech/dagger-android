@@ -2,15 +2,15 @@ package com.techyourchance.dagger2course.screens.common.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import com.techyourchance.dagger2course.MyApplication
-import com.techyourchance.dagger2course.common.dependnecyinjection.ActivityComponent
-import com.techyourchance.dagger2course.common.dependnecyinjection.ActivityModule
-import com.techyourchance.dagger2course.common.dependnecyinjection.AppModule
-import com.techyourchance.dagger2course.common.dependnecyinjection.DaggerActivityComponent
-import com.techyourchance.dagger2course.common.dependnecyinjection.DaggerAppComponent
-import com.techyourchance.dagger2course.common.dependnecyinjection.DaggerPresentationComponent
 import com.techyourchance.dagger2course.common.dependnecyinjection.Injector
-import com.techyourchance.dagger2course.common.dependnecyinjection.PresentationComponent
-import com.techyourchance.dagger2course.common.dependnecyinjection.PresentationModule
+import com.techyourchance.dagger2course.common.dependnecyinjection.activity.ActivityComponent
+import com.techyourchance.dagger2course.common.dependnecyinjection.activity.ActivityModule
+import com.techyourchance.dagger2course.common.dependnecyinjection.activity.DaggerActivityComponent
+import com.techyourchance.dagger2course.common.dependnecyinjection.app.AppModule
+import com.techyourchance.dagger2course.common.dependnecyinjection.app.DaggerAppComponent
+import com.techyourchance.dagger2course.common.dependnecyinjection.presentation.DaggerPresentationComponent
+import com.techyourchance.dagger2course.common.dependnecyinjection.presentation.PresentationComponent
+import com.techyourchance.dagger2course.common.dependnecyinjection.presentation.PresentationModule
 
 open class BaseActivity : AppCompatActivity() {
 

@@ -1,4 +1,4 @@
-package com.techyourchance.dagger2course.common.dependnecyinjection
+package com.techyourchance.dagger2course.common.dependnecyinjection.app
 
 import android.app.Application
 import androidx.annotation.UiThread
