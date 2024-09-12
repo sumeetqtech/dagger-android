@@ -19,13 +19,16 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     val activityComponent: ActivityComponent by lazy {
-        DaggerActivityComponent.builder().activityModule(ActivityModule(this, appComponent))
+        DaggerActivityComponent.builder()
+            .appComponent(appComponent)
+            .activityModule(ActivityModule(this))
             .build()
     }
 
     private val presentationComponent: PresentationComponent by lazy {
         DaggerPresentationComponent.builder()
-            .presentationModule(PresentationModule(activityComponent)).build()
+            .activityComponent(activityComponent)
+            .presentationModule(PresentationModule()).build()
     }
 
     protected val injector get() = presentationComponent

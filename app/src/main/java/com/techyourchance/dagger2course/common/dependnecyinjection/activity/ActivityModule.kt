@@ -12,14 +12,7 @@ import dagger.Provides
 @Module
 class ActivityModule(
     private val activity: AppCompatActivity,
-    private val component: AppComponent
 ) {
-    
-    @Provides
-    fun application() = component.application()
-
-    @Provides
-    fun stackoverflowApi(): StackoverflowApi = component.stackoverflowApi()
 
     @Provides
     fun fragmentManager(): FragmentManager = activity.supportFragmentManager
