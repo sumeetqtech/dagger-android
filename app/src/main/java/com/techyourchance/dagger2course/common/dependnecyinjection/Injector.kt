@@ -10,7 +10,7 @@ import java.lang.reflect.Field
 class UnsupportedServiceException(serviceType: Class<*>?) :
     RuntimeException("Unsupported service type: ${serviceType?.name}")
 
-class Injector(private val compositionRoot: PresentationModule) {
+class Injector(private val component: PresentationComponent) {
 
     fun inject(client: Any) {
         for (field in getAllFields(client)) {
@@ -29,11 +29,11 @@ class Injector(private val compositionRoot: PresentationModule) {
 
     private fun getServiceForClass(type: Class<*>?): Any {
         return when (type) {
-            DialogsNavigator::class.java -> compositionRoot.dialogsNavigator
-            ScreenNavigator::class.java -> compositionRoot.screenNavigator
-            FetchQuestionDetailsUseCase::class.java -> compositionRoot.fetchQuestionDetailsUseCase
-            FetchQuestionsUseCase::class.java -> compositionRoot.fetchQuestionsUseCase
-            ViewMvcFactory::class.java -> compositionRoot.viewMvcFactory
+            DialogsNavigator::class.java -> component.dialogsNavigator()
+            ScreenNavigator::class.java -> component.screenNavigator()
+            FetchQuestionDetailsUseCase::class.java -> component.fetchQuestionDetailsUseCase()
+            FetchQuestionsUseCase::class.java -> component.fetchQuestionsUseCase()
+            ViewMvcFactory::class.java -> component.viewMvcFactory()
             else -> throw UnsupportedServiceException(type)
         }
     }
