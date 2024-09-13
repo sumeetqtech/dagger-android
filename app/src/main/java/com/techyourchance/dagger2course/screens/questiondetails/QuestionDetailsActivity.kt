@@ -64,12 +64,7 @@ class QuestionDetailsActivity : BaseActivity(), QuestionDetailsViewMvc.Listener 
             try {
                 when (val result = fetchQuestionDetailsUseCase.fetchQuestionDetails(questionId)) {
                     is FetchQuestionDetailsUseCase.Result.Success -> {
-                        viewMvc.setQuestionText(
-                            Html.fromHtml(
-                                result.questionBody,
-                                Html.FROM_HTML_MODE_LEGACY
-                            ).toString()
-                        )
+                        viewMvc.setQuestionWithBody(result.questionBody)
                     }
 
                     is FetchQuestionDetailsUseCase.Result.Failure -> {

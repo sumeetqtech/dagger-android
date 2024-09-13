@@ -9,7 +9,7 @@ import kotlin.coroutines.cancellation.CancellationException
 class FetchQuestionDetailsUseCase @Inject constructor(private val stackoverflowApi: StackoverflowApi) {
 
     sealed class Result {
-        data class Success(val questionBody: String) : Result()
+        data class Success(val questionBody: QuestionWithBody) : Result()
         data object Failure : Result()
     }
 
@@ -18,7 +18,7 @@ class FetchQuestionDetailsUseCase @Inject constructor(private val stackoverflowA
             try {
                 val response = stackoverflowApi.questionDetails(questionId)
                 if (response.isSuccessful && response.body() != null) {
-                    val questionBody = response.body()!!.question.body
+                    val questionBody = response.body()!!.question
                     return@withContext Result.Success(questionBody)
                 } else {
                     return@withContext Result.Failure
