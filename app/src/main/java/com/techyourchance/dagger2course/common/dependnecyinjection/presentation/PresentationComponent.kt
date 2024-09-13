@@ -5,7 +5,7 @@ import com.techyourchance.dagger2course.screens.questionslist.QuestionsListFragm
 import dagger.Subcomponent
 
 @PresentationScope
-@Subcomponent(modules = [PresentationModule::class, UseCasesModule::class])
+@Subcomponent()
 interface PresentationComponent {
     fun inject(questionsListFragment: QuestionsListFragment)
     fun inject(questionDetailsActivity: QuestionDetailsActivity)

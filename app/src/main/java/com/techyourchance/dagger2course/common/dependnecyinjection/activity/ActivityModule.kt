@@ -13,13 +13,12 @@ class ActivityModule(
 ) {
 
     @Provides
+    fun activity() = activity
+
+    @Provides
     fun fragmentManager(): FragmentManager = activity.supportFragmentManager
 
     @Provides
     fun layoutInflater(): LayoutInflater = LayoutInflater.from(activity)
-
-    @Provides
-    @ActivityScope
-    fun screenNavigator(): ScreenNavigator = ScreenNavigator(activity)
 
 }
