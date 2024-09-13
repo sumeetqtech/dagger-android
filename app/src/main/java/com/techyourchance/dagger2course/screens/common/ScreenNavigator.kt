@@ -1,12 +1,9 @@
 package com.techyourchance.dagger2course.screens.common
 
-import androidx.appcompat.app.AppCompatActivity
-import com.techyourchance.dagger2course.common.dependnecyinjection.activity.ActivityScope
+import android.app.Activity
 import com.techyourchance.dagger2course.screens.questiondetails.QuestionDetailsActivity
-import javax.inject.Inject
 
-@ActivityScope
-class ScreenNavigator @Inject constructor(private val activity: AppCompatActivity) {
+class ScreenNavigator(private val activity: Activity) {
 
     fun navigateBack() {
         activity.onBackPressed()
