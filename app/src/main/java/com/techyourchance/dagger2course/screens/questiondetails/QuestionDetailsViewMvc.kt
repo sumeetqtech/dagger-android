@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.techyourchance.dagger2course.R
-import com.techyourchance.dagger2course.questions.Question
 import com.techyourchance.dagger2course.questions.QuestionWithBody
 import com.techyourchance.dagger2course.screens.common.imageloader.ImageLoader
 import com.techyourchance.dagger2course.screens.common.toolbar.MyToolbar
